@@ -1,5 +1,5 @@
 # Title
-WattWatch USA (Where is your energy coming from?)
+WattWatch USA (Where is *your* energy coming from?)
 
 # Sustainable Development Goal(s)
 1.  Affordable and Clean Energy
@@ -62,4 +62,4 @@ WattWatch USA (Where is your energy coming from?)
 # Mock up
 ![Website Mock Up](WebsiteMockup.jpg)
 # Data story
-Gabe's dad does solar, he searched up solar we gound EIA.gov, we love EIA.gov.
+Gabe's dad does solar, he searched up solar we found EIA.gov, we love EIA.gov.
