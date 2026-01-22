@@ -1,4 +1,4 @@
-# Contract for Team C (best team (not sorry))
+# Contract for Team C
 # Roles
 
 ## Sprint 1
