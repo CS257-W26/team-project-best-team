@@ -7,6 +7,8 @@ Gabe
 Hongmiao
 # Dependencies
 Python CSV module
+Python io module
+Python argpare module
 # Example
 python3 command_line.py --price "MN"
 This will display the price data for MN, more states can be added as a space-separated list. "US" is a state and will display the average/aggregate data for the whole US.
