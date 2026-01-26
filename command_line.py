@@ -4,6 +4,9 @@ from ProductionCode.table_maker import TableMaker
 from ProductionCode.states import states_list
 from ProductionCode.dataRetrieval import get_price_data_state
 
+EMISSIONS_FILE = "Data/state_year_power_summary.csv"
+LATEST_EMISSIONS_YEAR = "2024"
+
 def main():
     parser = argparse.ArgumentParser(
         description='Acesses and displays most recent emmisions and prices data by state.',
