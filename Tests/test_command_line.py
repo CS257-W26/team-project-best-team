@@ -31,4 +31,4 @@ class commandLineTestRW(unittest.TestCase):
         self.assertEqual(usData["transportationPrice"], 12.13)
 class TestCommandLine(unittest.TestCase):
     def test_normal_query(self):
-        """test a valid state in the command line interface""
+        """test a valid state in the command line interface"""
