@@ -1,6 +1,10 @@
 import argparse
+import csv
 from ProductionCode.table_maker import TableMaker
 from ProductionCode.states import states_list
+
+EMISSIONS_FILE = "Data/state_year_power_summary.csv"
+LATEST_EMISSIONS_YEAR = "2024"
 
 def main():
     parser = argparse.ArgumentParser(
@@ -43,14 +47,67 @@ Please use uppercase two letter state codes or 'US'")
     myTable.print_table()
 
 
+def getEmissionData(state):
+    """
+    Returns emissions data for one state using the most recent year
+    in state_year_power_summary.csv
+    """
+    year_to_use = LATEST_EMISSIONS_YEAR
+
+    def toNumber(value):
+        if value is None:
+            return None
+        s = str(value).replace(",","").strip()
+        if s == "":
+            return None
+        try:
+            return float(s)
+        except:
+            return None
+
+    with open(EMISSIONS_FILE, newline="") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            if row.get("State") == state and row.get("Year") == year_to_use:
+                return {
+                    "generation": toNumber(row.get("Generation (kWh)")),
+                    "thermalOutput": toNumber(row.get("Useful Thermal Output (MMBtu)")),
+                    "totalFuelConsumption": toNumber(row.get("Total Fuel Consumption (MMBtu)")),
+                    "totalFuelConsumptionGeneration": toNumber(row.get("Fuel Consumption for Electric Generation (MMBtu)")),
+                    "co2Tons": toNumber(row.get("Tons of CO2 Emissions")),
+                    "co2MetricTons": toNumber(row.get("Metric Tonnes of CO2 Emissions"))
+                }
+
+    raise KeyError("No emissions data found for " + state + " in " + year_to_use)             
 
 
-#Hongmiao
-#def getData("list of states", "list of flags"):
-"""returns array of dicts"""
+def getData(states, flags):
+    """
+    Returns an array of dict entries for TableMaker.
 
-#Hongmiao
-#def getEmmissionsData("State"):
+    states: list like ["MN","ND"]
+    flags: [prices_flag, emission_flag]
+    """
+    results = []
+    year_label = "2024" if flags[1] else ""
+
+    for state in states:
+        entry = {
+            "state": state,
+            "year": year_label
+        }
+
+        if flags[1]:
+            emissions = getEmissionData(state)
+            entry.update(emissions)
+        
+        if flags[0]:
+            prices = getPriceData(state)
+            entry.update(prices)
+        
+        results.append(entry)
+
+    return results
 
 #Rafael
 #def getPriceData("State"):
