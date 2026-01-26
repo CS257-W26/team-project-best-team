@@ -1,8 +1,14 @@
+'''
+File contains test for the data_retrieval file in ProductionCode
+'''
 import unittest
 from ProductionCode.data_retrieval import get_price_data_state, aggregate_month_data_sales, to_num_or_zero, fixed_dict_format
 if __name__ == '__main__':
     unittest.main()
-class dataRetrievalTest(unittest.TestCase):
+class DataRetrievalTest(unittest.TestCase):
+    '''
+    Class contains functions that test data_retrieval file in ProductionCode
+    '''
     maxDiff=None
     def test_get_price_data_state_KS24(self):
         '''
@@ -35,11 +41,15 @@ class dataRetrievalTest(unittest.TestCase):
     def test_aggregate(self):
         '''
         Docstring for test_aggregate
-        Tests that aggregate_month_data_sales is able to take inputs in form of list of lists and output dict
+        Tests aggregate_month_data_sales able to take inputs in form of list of lists and output dict
         :param self: Description
         '''
-        test_AL1025 = [2025,10,"AL","Preliminary","382,814","2,289,572","2,434,519",16.72,"274,505","1,869,742","397,623",14.68,"202,443","2,730,802","7,256",7.41,0,0,0,0.00,"859,762","6,890,116","2,839,398",12.48]
-        test_AL925 = [2025,9,"AL","Preliminary","480,720","2,926,702","2,435,862",16.43,"302,522","2,097,871","397,761",14.42,"217,753","2,788,836","7,269",7.81,0,0,0,0.00,"1,000,995","7,813,408","2,840,892",12.81]
+        test_AL1025 = [2025,10,"AL","Preliminary","382,814","2,289,572","2,434,519",16.72,
+                       "274,505","1,869,742","397,623",14.68,"202,443","2,730,802","7,256",7.41,
+                       0,0,0,0.00,"859,762","6,890,116","2,839,398",12.48]
+        test_AL925 = [2025,9,"AL","Preliminary","480,720","2,926,702","2,435,862",16.43,
+                      "302,522","2,097,871","397,761",14.42,"217,753","2,788,836","7,269",7.81
+                      ,0,0,0,0.00,"1,000,995","7,813,408","2,840,892",12.81]
         #Prolly coulda just checked a few values were equal but alas
         self.assertEqual(aggregate_month_data_sales([test_AL1025,test_AL925]), 
                          {"residential": {"revenue": 863534, "sales": 5216274, "customers": 2435190, "priceAvg": 16.57},
@@ -68,12 +78,12 @@ class dataRetrievalTest(unittest.TestCase):
         Tests that given an output from aggregate_month_data_sales and the proper state, will make proper dictionary format
         :param self: Description
         '''
-        badFormatDict = {"residential": {"revenue": 863534, "sales": 5216274, "customers": 4870381, "priceAvg": 16.57},
+        bad_format_dict = {"residential": {"revenue": 863534, "sales": 5216274, "customers": 4870381, "priceAvg": 16.57},
                           "commercial": {"revenue": 577027, "sales": 3967613, "customers": 795384, "priceAvg": 14.55},
                           "industrial": {"revenue": 420196, "sales": 5519638, "customers": 14525, "priceAvg": 7.61},
                           "transportation": {"revenue": 0, "sales": 0, "customers": 0, "priceAvg": 0.00},
                           "total": {"revenue": 1860757, "sales": 14703524, "customers": 5680290, "priceAvg": 12.64}}
-        self.assertEqual(fixed_dict_format(badFormatDict, "AL"), 
+        self.assertEqual(fixed_dict_format(bad_format_dict, "AL"),
                          {
                             "state": "AL", "year":2025, 
                             "residentialRevenue":863534, "residentialSales":5216274, "residentialCustomers":4870381, "residentialPrice":16.57,
@@ -89,12 +99,12 @@ class dataRetrievalTest(unittest.TestCase):
         Tests that given an output from aggregate_month_data_sales and the proper state, will make proper dictionary format
         :param self: Description
         '''
-        badFormatDict = {"residential": {"revenue": 863534, "sales": 5216274, "customers": 4870381, "priceAvg": 16.57},
+        bad_format_dict = {"residential": {"revenue": 863534, "sales": 5216274, "customers": 4870381, "priceAvg": 16.57},
                           "commercial": {"revenue": 577027, "sales": 3967613, "customers": 795384, "priceAvg": 14.55},
                           "industrial": {"revenue": 420196, "sales": 5519638, "customers": 14525, "priceAvg": 7.61},
                           "transportation": {"revenue": 0, "sales": 0, "customers": 0, "priceAvg": 0.00},
                           "total": {"revenue": 1860757, "sales": 14703524, "customers": 5680290, "priceAvg": 12.64}}
-        self.assertEqual(fixed_dict_format(badFormatDict, "US"), 
+        self.assertEqual(fixed_dict_format(bad_format_dict, "US"),
                          {
                             "state": "US", "year":2025, 
                             "residentialRevenue":863534, "residentialSales":5216274, "residentialCustomers":248389431, "residentialPrice":16.57,
