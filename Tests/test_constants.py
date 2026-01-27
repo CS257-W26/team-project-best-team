@@ -11,7 +11,7 @@ total Revenue              ($1K)| NULL | 1.20 | NULL"
 #valid_us_table = 
 
 valid_ndsd_table = "State                           | ND             | SD            \n\
-Year                            | 2025          | 2025         \n\
+Year                            | 2025           | 2025          \n\
 --------------------------------|----------------|---------------\n\
 Generation                 (kWh)| 25,668,864,763 | 3,839,359,578 \n\
 Useful Thermal Output    (MMBtu)| 7,839,786      | 1,468,469     \n\
@@ -41,7 +41,7 @@ total Sales                (MWh)| 24,847,406     | 11,489,256    \n\
 total Customers                 | 488,237        | 527,324"
 
 valid_mn_table = "State                           | MN             \n\
-Year                            | 2025          \n\
+Year                            | 2025           \n\
 --------------------------------|----------------\n\
 Generation                 (kWh)| 27,814,120,731 \n\
 Useful Thermal Output    (MMBtu)| 17,095,959     \n\
@@ -71,7 +71,7 @@ total Sales                (MWh)| 54,963,144     \n\
 total Customers                 | 2,938,023"
 
 valid_us_price_table = "State                           | US            \n\
-Year                            | 2025         \n\
+Year                            | 2025          \n\
 --------------------------------|---------------\n\
 Residential Revenue        ($1K)| 222,032,916   \n\
 Residential Sales          (MWh)| 1,285,315,546 \n\
