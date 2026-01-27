@@ -22,8 +22,8 @@ WattWatch USA (Where is *your* energy coming from?)
 ## Feature 3: Individual State Displays
 
 * Person responsible: Hongmiao
-* User story: As a user I want to see data for a specific state so that I am more informed about energy consumption for each state.
-* Acceptance Criteria: The user will be able to enter a command (python3 code.py "Minnesota"), then all available energy data for Minnesota will be displayed. 
+* User story: As a user I want to see data for a specific state so that I am more informed about most recent energy consumption for the state.
+* Acceptance Criteria: The user will be able to enter a command (python3 code.py "MN"), then all available energy data for Minnesota will be displayed. 
 
 
 # Datasets Metadata
