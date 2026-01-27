@@ -63,8 +63,10 @@ class TableMaker:
         self.entries.append(entry)
 
     def add_data_for_entry(self, state, year, data):
-        """adds a new data entry for the state and year. raises an error if entry for state and year does not exist
-        data is a tuple (key, data) key must be an acceptable key for this class. See DISPLAY_ALLIASES"""
+        """adds a new data entry for the state and year.
+        raises an error if entry for state and year does not exist 
+        data is a tuple (key, data) and key must be an acceptable key for this class
+        (See DISPLAY_ALLIASES)"""
         if not isinstance(data, tuple):
             raise TypeError("Data must be a tuple of (key, value)")
         for entry in self.entries:
@@ -89,7 +91,8 @@ class TableMaker:
                     line += f"| {'NULL':<{colSizes[j]}}"
                 else:
                     value = self.entries[j].get(DISPLAY_ALLIASES[i][0])
-                    value = self.format_entry(value)
+                    if DISPLAY_ALLIASES[i][0] is not 'year':
+                        value = self.format_entry(value)
                     line += f"| {value:<{colSizes[j]}}"
             if i < len(DISPLAY_ALLIASES)-1:
                 buffer.write(line + "\n")
@@ -119,9 +122,10 @@ class TableMaker:
                 value = entry.get(DISPLAY_ALLIASES[i][0])
                 if value == None:
                     continue
-                value = self.format_entry(value)
-                if len(value) > largestEntry:
-                    largestEntry = len(value)
+                if DISPLAY_ALLIASES[i][0] is not 'year':
+                    value = self.format_entry(value)
+                    if len(value) > largestEntry:
+                        largestEntry = len(value)
             sizes.append(largestEntry + 1)
         return sizes
 

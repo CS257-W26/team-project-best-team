@@ -66,7 +66,7 @@ class TestTableMakerOutput(unittest.TestCase):
         self.assertEqual(self.table.format_entry('str'), 'str')
     def test_get_col_sizes(self):
         """test get_col_sizes function"""
-        self.assertEqual(self.table.get_col_sizes(), [6,6,11])
+        self.assertEqual(self.table.get_col_sizes(), [5,5,11])
     def test_is_row_empty(self):
         """test is_row_empty function"""
         self.assertFalse(self.table.is_row_empty('co2Tons'))
