@@ -4,7 +4,8 @@ import unittest
 import sys
 from io import StringIO
 from ProductionCode.table_maker import TableMaker
-from Tests.test_constants import valid_table
+from command_line import getData
+from Tests.test_constants import valid_table, valid_mn_table, valid_us_price_table, valid_ndsd_table
 
 class TestTableMakerInput(unittest.TestCase):
     """Tests the TableMaker class input functions"""
@@ -77,6 +78,34 @@ class TestTableMakerOutput(unittest.TestCase):
         self.table.print_table()
         output = sys.stdout.getvalue().strip()
         self.assertEqual(output, valid_table)
+    
+class TestTableOutputUserStories(unittest.TestCase):
+    maxDiff=None
+    def test_us_display(self):
+        us_price_data = getData(["US"], [True, False])
+        us_table = TableMaker()
+        us_table.add_new_entry(us_price_data[0])
+        sys.stdout = StringIO()
+        us_table.print_table()
+        output = sys.stdout.getvalue().strip()
+        self.assertEqual(output, valid_us_price_table)
+    def test_two_state_display(self):
+        two_state_data = getData(["ND", "SD"], [True, True])
+        two_state_table = TableMaker()
+        two_state_table.add_new_entry(two_state_data[0])
+        two_state_table.add_new_entry(two_state_data[1])
+        sys.stdout = StringIO()
+        two_state_table.print_table()
+        output = sys.stdout.getvalue().strip()
+        self.assertEqual(output, valid_ndsd_table)
+    def test_single_state_display(self):
+        one_state_data = getData(["MN"], [True, True])
+        one_state_table = TableMaker()
+        one_state_table.add_new_entry(one_state_data[0])
+        sys.stdout = StringIO()
+        one_state_table.print_table()
+        output = sys.stdout.getvalue().strip()
+        self.assertEqual(output, valid_mn_table)
 
 
 if __name__ == '__main__':

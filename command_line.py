@@ -2,15 +2,18 @@ import argparse
 import csv
 from ProductionCode.table_maker import TableMaker
 from ProductionCode.states import states_list
-from ProductionCode.dataRetrieval import get_price_data_state
+from ProductionCode.data_retrieval import get_price_data_state
 
 EMISSIONS_FILE = "Data/state_year_power_summary.csv"
 LATEST_EMISSIONS_YEAR = "2024"
 
 def main():
+    '''
+    Docstring for main - Handles user input with argparse and calls functions to get data and displays info
+    '''
     parser = argparse.ArgumentParser(
         description='Acesses and displays most recent emmisions and prices data by state.',
-        epilog='Example:'
+        epilog='Example: python3 command_line.py KS -p -> will display price information for Kansas in 2024'
     )
     parser.add_argument('-p', '--prices', action='store_true',
                         help='add prices to output')  
@@ -30,24 +33,23 @@ use all caps two letter state codes,\
         flags[1] = args.emissions
     else:
         flags = [True] * 2
-    
     #args
     for entry in args.args:
         if entry not in states_list:
             parser.error(entry + " is not a given state. \
 Please use uppercase two letter state codes or 'US'")
-
+    retrieved_data = getData(args.args, flags=flags)
     myTable = TableMaker()
-    
+    for state in retrieved_data:
+        myTable.add_new_entry(state)
+    '''
     myTable.add_new_entry({"state": "MN", "year": "1990"})
     myTable.add_new_entry({"state": "WY", "year": "2005" , "totalRevenue" : "1.2"})
     myTable.add_new_empty_entry("US", "2026")
     myTable.add_data_for_entry("US", "2026", ("co2Tons", "50000000"))
     myTable.add_data_for_entry("MN", "1990", ("totalFuelConsumptionGeneration", "100"))
-    
+    '''
     myTable.print_table()
-
-
 def getEmissionData(state):
     """
     Returns emissions data for one state using the most recent year
@@ -110,9 +112,6 @@ def getEmissionData(state):
                 }
 
     raise KeyError("No emissions data found for " + state + " in " + year_to_use)
-           
-
-
 def getData(states, flags):
     """
     Returns an array of dict entries for TableMaker.
@@ -148,8 +147,6 @@ def getData(states, flags):
         results.append(entry)
 
     return results
-
-#Rafael
 def get_price_data(state):
     '''
     Docstring for getPriceData
@@ -160,37 +157,27 @@ def get_price_data(state):
     dict["state"] = KS if state param is KS
     dict["residentialRevenue"] = residential revenue for year 2025 in KS, summed values from all months 
     '''
-    '''
-    To make table (i think)
-    priceDict = {valid dict}
-    priceTable = TableMaker()
-    priceTable.addNewEntry(priceDict)
-
-    '''
-
     return get_price_data_state(state, 2025) 
 
-
-#Rafael
+'''
+REMOVED - no longer needed
 def get_US_data():
-    '''
+    ''
     Will get data for entire us to be displayed
     Calls to getPriceData() and getEmmissionsData() with US as the state
     will store retreived data as a dict of dict with usData["price"] storing price dict and usData["emissions"] storing emissions dict
-    '''
+    ''
     usData = {}
     priceDict = get_price_data("US")
-    #emissionsDict = getEmmissionsData("US")
+    emissionsDict = getEmissionData("US")
     for key, value in priceDict.items():
         usData[key] = value
-    '''
     for key,value in emissionsDict.items():
         usData[key] = value
-    '''
     return usData
-
-
-#Rafael
+'''
+'''
+REMOVED - no longer needed
 def show_help(): 
     print("Usage: python3 command_line.py State --prices --emissions\n"\
         "--prices: optional tag - add tag to display information on prices\n"\
@@ -200,7 +187,7 @@ def show_help():
         "   - US is the symbol used to get info for entire US\n"\
         "The year of retreived data is most recent data so 2025 (for now)"    
         )
-    '''
+
     Usage: python3 command_line.py State --prices --emissions 
     --prices: optional tag - add tag to display information on prices
     --emissions: optional tag - add tag to display information on emissions
@@ -212,10 +199,7 @@ def show_help():
         retrieve information from the data sets about energy prices, emissions, and generation
         Usage: python3 command_line.py State --prices --year 2023
     Prices tag: Get the price data 
-    
-    '''
-    
 
-
+'''
 if __name__ == "__main__":
     main()
