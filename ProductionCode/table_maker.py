@@ -2,6 +2,7 @@
 Each entry has two required fields"""
 
 import io
+from ProductionCode.data_processing import format_string
 
 #variables
 DISPLAY_ALIASES = [
@@ -75,8 +76,6 @@ class TableMaker:
                 return
         raise KeyError("Entry does not exists")
 
-
-
     def print_table(self):
         """Displays the table"""   
         buffer = io.StringIO()
@@ -92,7 +91,7 @@ class TableMaker:
                 else:
                     value = self.entries[j].get(alias[0])
                     if alias[0] != 'year':
-                        value = self.format_entry(value)
+                        value = format_string(value)
                     line += f"| {value:<{colSizes[j]}}"
             buffer.write(line + "\n")
 
@@ -122,22 +121,7 @@ class TableMaker:
                 if value is None:
                     continue
                 if alias[0] != 'year':
-                    value = self.format_entry(value)
+                    value = format_string(value)
                     largest_entry = max(largest_entry, len(value))
             sizes.append(largest_entry + 1)
         return sizes
-
-    def format_entry(self, entry):
-        """returns a formatted string
-        if value is an int -> truncates and adds ,s
-        if value is a float -> truncates to two decimal places and add ,s
-        if it cant be interperated as either -> return entry"""
-        try:
-            value = float(entry)
-            if value % 1 == 0:
-                value = f"{int(value):,.0f}"
-            else:
-                value = f"{float(value):,.2f}"
-            return value
-        except ValueError:
-            return entry

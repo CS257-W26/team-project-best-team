@@ -1,4 +1,5 @@
 import argparse
+import sys
 import csv
 from ProductionCode.table_maker import TableMaker
 from ProductionCode.states import states_list
@@ -8,38 +9,12 @@ EMISSIONS_FILE = "Data/state_year_power_summary.csv"
 LATEST_EMISSIONS_YEAR = "2024"
 
 def main():
-    '''
-    Docstring for main - Handles user input with argparse and calls functions to get data and displays info
-    '''
-    parser = argparse.ArgumentParser(
-        description="Acesses and displays most recent emmisions and prices data by state.\n\n\
-        Note: no year selection available ... yet",
-        epilog='Example: python3 command_line.py -p KS -> will display price information for Kansas in 2024'
-    )
-    parser.add_argument('-p', '--prices', action='store_true',
-                        help='add prices to output     (default is all data)')  
-    parser.add_argument('-e', '--emissions', action='store_true',
-                        help='add emissions to output  (default is all data)') 
-    parser.add_argument('args', nargs='*',type=str,
-                        help="A space seperated list of states to display, \
-use all caps two letter state codes, \
-'US' displays the totals/averages for the whole US")
-    
-    args = parser.parse_args()
+    '''Handles user input with argparse calls data retrival functions, displays to command line'''
+    #process input
+    args = parse_input()
+    flags = get_flags(args)
 
-    #process flags
-    flags = [False] * 2
-    if args.prices or args.emissions:
-        flags[0] = args.prices
-        flags[1] = args.emissions
-    else:
-        flags = [True] * 2
-    #args
-    for entry in args.args:
-        if entry not in states_list:
-            parser.error(entry + " is not a given state. \
-Please use uppercase two letter state codes or 'US'")
-
+    #get data
     completeData = getData(args.args, flags)
     myTable = TableMaker()
 
@@ -47,6 +22,54 @@ Please use uppercase two letter state codes or 'US'")
         myTable.add_new_entry(i)
       
     myTable.print_table()
+
+def settup_argument_parser():
+    """Setsup ArgumentParser object"""
+    parser = argparse.ArgumentParser(
+        description="Acesses and displays most recent emmisions and prices data by state.\n\n\
+        Note: no year selection available ... yet",
+        epilog='Example: python3 command_line.py -p KS -> will display price information for Kansas in 2024'
+    )
+    parser.add_argument('-p', '--prices', action='store_true',
+                        help='add prices to output (default is all data)')  
+    parser.add_argument('-e', '--emissions', action='store_true',
+                        help='add emissions to output (default is all data)') 
+    parser.add_argument('args', nargs='*',type=str,
+                        help="A space seperated list of states to display, \
+                        use all caps two letter state codes, \
+                        'US' displays the totals/averages for the whole US")
+    return parser
+
+def parse_input():
+    """handles special cases and returns args"""
+    parser = settup_argument_parser()
+    args = parser.parse_args()
+
+    #check if no args
+    if len(sys.argv) < 2:
+        parser.print_help()
+        sys.exit(0) 
+
+    #args
+    for entry in args.args:
+        if entry not in states_list:
+            parser.error(entry + " is not a given state. \
+Please use uppercase two letter state codes or 'US'")
+            sys.exit(1)
+    return args
+
+def get_flags(args):
+    """Creates a list of bools, used by the production code, to retrive filtered data"""
+    #process flags : see settup_argument_parser or help screen to see the behavior filter flags
+    flags = [False] * 2
+    if args.prices or args.emissions:
+        flags[0] = args.prices
+        flags[1] = args.emissions
+    else:
+        flags = [True] * 2
+    return flags
+
+
 def getEmissionData(state):
     """
     Returns emissions data for one state using the most recent year

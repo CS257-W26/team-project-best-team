@@ -60,11 +60,6 @@ class TestTableMakerOutput(unittest.TestCase):
         self.table.add_new_empty_entry("US", "2026")
         self.table.add_data_for_entry("US", "2026", ("co2Tons", "50000000"))
         self.table.add_data_for_entry("MN", "1990", ("totalFuelConsumptionGeneration", "100"))
-    def test_format_entry(self):
-        """test format_entry function"""
-        self.assertEqual(self.table.format_entry('4000'), '4,000')
-        self.assertEqual(self.table.format_entry('63.6432'), '63.64')
-        self.assertEqual(self.table.format_entry('str'), 'str')
     def test_get_col_sizes(self):
         """test get_col_sizes function"""
         self.assertEqual(self.table.get_col_sizes(), [5,5,11])
